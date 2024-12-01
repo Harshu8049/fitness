@@ -49,34 +49,41 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Stack(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                controller.gifUrl[index],
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child; // Image has finished loading
-                                  } else {
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                (loadingProgress
-                                                        .expectedTotalBytes ??
-                                                    1)
-                                            : null,
-                                      ),
-                                    );
-                                  }
-                                },
+                            Hero(
+                              tag: exercise.name,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  controller.gifUrl[index],
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder: (BuildContext context,
+                                      Widget child,
+                                      ImageChunkEvent? loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      return child;
+                                    } else {
+                                      return Container(
+                                        width: 100,
+                                        height: 100,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    (loadingProgress
+                                                            .expectedTotalBytes ??
+                                                        1)
+                                                : null,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
                               ),
                             ),
                             Positioned(
@@ -145,7 +152,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => DetailsScreen(
-                                                exercise: exercise),
+                                              exercise: exercise,
+                                              index: index,
+                                            ),
                                           ),
                                         );
                                       },
