@@ -47,16 +47,36 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: Row(
                       children: [
-                        // Exercise Image with Favorite Button
                         Stack(
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: Image.network(
-                                "https://blog.logrocket.com/wp-content/uploads/2022/01/handling-network-connectivity-flutter.png",
+                                controller.gifUrl[index],
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child; // Image has finished loading
+                                  } else {
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                (loadingProgress
+                                                        .expectedTotalBytes ??
+                                                    1)
+                                            : null,
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                             ),
                             Positioned(
